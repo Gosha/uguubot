@@ -25,7 +25,7 @@ def init_tables(db, table):
 def field_exists(db,table,matchfield,matchvalue):
     # if table_exists(db,table):
     init(db)
-    exists = db.execute("SELECT EXISTS(SELECT 1 FROM {} WHERE {}='{}' LIMIT 1);".format(table,matchfield,matchvalue.encode('utf8'))).fetchone()[0]
+    exists = db.execute("SELECT EXISTS(SELECT 1 FROM {} WHERE {}=? LIMIT 1);".format(table,matchfield), (matchvalue.encode('utf8'),)).fetchone()[0]
     # print "Exists: '{}'".format(exists)
     if exists: return True
     else: return False
@@ -33,7 +33,7 @@ def field_exists(db,table,matchfield,matchvalue):
 def get(db,table,field,matchfield,matchvalue):
     init(db)
     #print "SELECT {} FROM {} WHERE {}='{}';".format(field,table,matchfield,matchvalue.lower())
-    result = db.execute("SELECT {} FROM {} WHERE {}='{}';".format(field,table,matchfield,matchvalue.encode('utf8').lower())).fetchone()
+    result = db.execute("SELECT {} FROM {} WHERE {}=   ?;".format(field,table,matchfield), (matchvalue.encode('utf8').lower(),)).fetchone()
     #if result: print "Get: {}='{}'".format(field,result[0].strip())
     # if result is '' or result is ' ' or result is None or result is False or result is 'NULL': return False
     # elif result is int and len(str(result)) == 1: return False
@@ -47,14 +47,14 @@ def set(db, table, field, value, matchfield, matchvalue):
     try:
         if field_exists(db,table,matchfield,matchvalue):
             # print "UPDATE {} SET {} = '{}' WHERE {} = '{}';".format(table,field,value,matchfield,matchvalue.encode('utf8').lower())
-            db.execute("UPDATE {} SET {} = '{}' WHERE {} = '{}';".format(table,field,value,matchfield,matchvalue.encode('utf8').lower()))
+            db.execute("UPDATE {} SET {} = ? WHERE {} = ?;".format(table,field,matchfield), (value,matchvalue.encode('utf8').lower()))
         else: 
             # print "INSERT INTO {} ({},{}) VALUES ('{}','{}');".format(table,field,matchfield,value,matchvalue.encode('utf8').lower())
-            db.execute("INSERT INTO {} ({},{}) VALUES ('{}','{}');".format(table,field,matchfield,value,matchvalue.encode('utf8').lower()))
+            db.execute("INSERT INTO {} ( {} , {} ) VALUES ( ? , ? );".format(table,field,matchfield), (value,matchvalue.encode('utf8').lower()))
     except:
         #print "DB"
         # print "UPDATE {} SET {} = '{}' WHERE {} = '{}';".format(table,field,value,matchfield,matchvalue.encode('utf8').lower())
-        db.execute("UPDATE {} SET {} = '{}' WHERE {} = '{}';".format(table,field,value,matchfield,matchvalue.encode('utf8').lower()))
+        db.execute("UPDATE {} SET {} = ? WHERE {} = ?".format(table, field, matchfield),(value,matchvalue.encode('utf8').lower()))
         
     db.commit()
     return
