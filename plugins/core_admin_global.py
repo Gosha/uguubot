@@ -150,7 +150,7 @@ def adduser(inp, bot=None, notice=None):
 
 
 @hook.command("quit", autohelp=False, permissions=["botcontrol"], adminonly=True)
-@hook.command(autohelp=False, permissions=["botcontrol"])
+@hook.command(autohelp=False, permissions=["botcontrol"], adminonly=True)
 def stop(inp, nick=None, conn=None):
     """stop [reason] -- Kills the bot with [reason] as its quit message."""
     if inp:
