@@ -501,7 +501,7 @@ def flood(inp, conn=None, chan=None, notice=None, db=None):
         else: 
             notice(u"[{}]: Flood is disabled.".format(chan))
             notice(flood.__doc__)
-    elif "disable" in inp or "0 " in inp:
+    elif "disable" in inp or " 0" in inp:
             database.set(db,'channels','flood',None,'chan',chan)
             notice(u"[{}]: Flood Protection Disabled.".format(chan))
     else:
