@@ -59,7 +59,7 @@ def greeting(inp, nick=None, conn=None, chan=None,db=None, notice=None):
     if not inp or '@' in inp:
         if '@' in inp: nick = inp.split('@')[1].strip()
         greeting = database.get(db,'users','greeting','nick',nick)
-        if greeting: return '{}: {}'.format(nick,greeting)
+        if greeting: return '%s: %s' % (nick,greeting)
         else: return 'No greeting saved for {}.'.format(nick)
     elif 'del' in inp:
         database.set(db,'users','greeting','','nick',nick)
