@@ -56,6 +56,8 @@ def add(inp,notice=None):
     command = inp.split(' ')[0]
     text = inp.replace(command,'').strip()
     if 'loli' in command: command = 'lolis'
+    elif 'trap' in command: command = 'traps'
+    elif 'shota' in command: command = 'shotas'
     elif 'insult' in command: command = 'insults'
     elif 'kek' in command: command = 'keks'
     elif 'flirt' in command: command = 'flirts'
@@ -92,6 +94,15 @@ def send_phrase(inp,attack,nick,conn,me,notice):
     print phrase
     # act out the message
     me(phrase.format(**values))
+    return
+
+def send_link(inp, me=None, type="lolis"):
+    "Send a random link"
+    with open("plugins/data/{}.txt".format(type),) as f:
+        links = [line.strip() for line in f.readlines() if not line.startswith("//")]
+
+    try: me("\x02\x034NSFW\x034\x02 {}".format(random.choice(links)))
+    except: return "No {} saved.".format(type)
     return
 
 
@@ -223,14 +234,18 @@ def topkek(inp,me=None):
 @hook.command(autohelp=False)
 def loli(inp,me=None):
     "loli -- Returns a loli."
-    with open("plugins/data/lolis.txt",) as f:
-        lolis = [line.strip() for line in f.readlines() if not line.startswith("//")]
+    return send_link(inp, me, "lolis")
 
-    print lolis[10]
+@hook.command(autohelp=False)
+def trap(inp,me=None):
+    "trap -- Returns a trap."
+    return send_link(inp, me, "traps")
 
-    try: me("\x02\x034NSFW\x034\x02 {}".format(random.choice(lolis)))
-    except: return "No lolis saved."
-    return
+@hook.command(autohelp=False)
+def shota(inp,me=None):
+    "shota -- Returns a shota."
+    return send_link(inp, me, "shotas")
+
 
 @hook.command(autohelp=False)
 def moistcake(inp,me=None):
