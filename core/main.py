@@ -186,8 +186,8 @@ def main(conn, out):
 
         # REGEXES
         for func, args in bot.plugs['regex']:
-            m = args['re'].match(inp.lastparam)
-            if m:
+            match = args['re'].match(inp.lastparam)
+            if match:
                 input = Input(conn, *out)
-                input.inp = md
+                input.inp = match
                 dispatch(input, "regex", func, args)
