@@ -93,7 +93,10 @@ class _CleverbotSession(ChatterBotSession):
         self.vars['stimulus'] = thought.text
         data = urllib.urlencode(self.vars)
         data_to_digest = data[9:self.bot.endIndex]
-        data_digest = hashlib.new(data_to_digest).hexdigest()
+        print data_to_digest
+        data_digest = hashlib.new('md5')
+        data_digest.update(data_to_digest)
+        data_digest = data_digest.hexdigest()
         data = data + '&icognocheck=' + data_digest
         url_response = urllib2.urlopen(self.bot.url, data)
         response = url_response.read()
