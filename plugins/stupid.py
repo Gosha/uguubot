@@ -257,6 +257,9 @@ def pushups(inp,autohelp=False,me=None,paraml=None):
     else: inp = inp.replace('@','').strip()
     me('wants {} to get swole as fuck, do {} {} now bitch!'.format(inp,random.randint(0, 50),activity))
 
+@hook.command
+def confetti(inp):
+    return "\x0310🎈 \x038🎆🎉🎇 \x02\x034CONGRATULATIONS \x0F\x038🎇🎊🎆 \x0302🎈".decode('utf-8')
 
 # var replies = ['faggot','i ought to fuk u up m8','1v1 me','do u evn lift','ur mom','consider urself trolld','ur mom iz gay','stfu fagget','omg nub','u hax i repert u','my dad works for this site so I would be nice if I were you','ill rek u','get rekt scrub','u r gay'];
 
