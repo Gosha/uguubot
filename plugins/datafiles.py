@@ -90,7 +90,7 @@ def flirt(inp, me=None, nick=None, conn=None, notice=None):
     send_phrase(inp,flirts,nick,conn,me,notice)
     return
 
-
+@hook.command('wasabi')
 @hook.command(autohelp=False)
 def yiff(inp, me=None, nick=None, conn=None, notice=None):
     """yiff <user> -- yiffs <user>."""
