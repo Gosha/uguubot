@@ -17,7 +17,7 @@ link_re = (r'((https?://([-\w\.]+)+(:\d+)?(/([\S/_\.]*(\?\S+)?)?)?))', re.I)
 @hook.regex(*link_re)
 def process_url(match,bot=None,input=None,chan=None,db=None, reply=None):
     global trimlength
-    url = match.group(1).replace('https:','http:').lower()
+    url = match.group(1).replace('https:','http:')
 
     if '127.0.0.1' in url or 'localhost' in url: return
     
@@ -45,6 +45,7 @@ def process_url(match,bot=None,input=None,chan=None,db=None, reply=None):
     elif 'soundcloud.com'    in url: return                         #handled by soundcloud plugin: exiting
     elif 'spotify.com'       in url: return                         #handled by Spotify plugin: exiting
     elif 'twitch.tv'         in url: return                         #handled by Twitch plugin: exiting
+    elif 'twitter.com'       in url: return                         #handled by Twitter plugin: exiting
     elif 'simg.gelbooru.com' in url: return unmatched_url(url)      #handled by Gelbooru plugin: exiting
     elif 'gelbooru.com'      in url: return                         #handled by Gelbooru plugin: exiting
     elif 'craigslist.org'    in url: return craigslist_url(url)     #Craigslist
