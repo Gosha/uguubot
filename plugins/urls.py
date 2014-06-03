@@ -17,7 +17,7 @@ link_re = (r'((https?://([-\w\.]+)+(:\d+)?(/([\S/_\.]*(\?\S+)?)?)?))', re.I)
 @hook.regex(*link_re)
 def process_url(match,bot=None,input=None,chan=None,db=None, reply=None):
     global trimlength
-    url = match.group(1).replace('https:','http:').lower()
+    url = match.group(1).replace('https:','http:')
 
     if '127.0.0.1' in url or 'localhost' in url: return
     
