@@ -10,11 +10,6 @@
 <g>Yes
 <g>Yes, definitely
 <g>You may rely on it
-<y>Reply hazy, try again
-<y>Ask again later
-<y>Better not tell you now
-<y>Cannot predict now
-<y>Concentrate and ask again
 <y>You know the answer better than I
 <y>Maybe...
 <r>You're kidding, right?
