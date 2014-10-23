@@ -171,7 +171,7 @@ def storyofpomfface(inp, reply=None):
    return
 
 
-@hook.regex(r'^(same)$')
+@hook.regex(r'^(same)$', re.I)
 def same(inp):
     "same -- dont feel left out"
     if random.randint(1, 5) == 3: return 'butts'
