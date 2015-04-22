@@ -6,6 +6,7 @@ import tweepy
 
 from util import hook, timesince
 
+import HTMLParser
 
 TWITTER_RE = (r"(?:(?:www.twitter.com|twitter.com)/(?:[-_a-zA-Z0-9]+)/status/)([0-9]+)", re.I)
 
@@ -42,7 +43,8 @@ def twitter_url(match, bot=None):
         return
 
     # Format the return the text of the tweet
-    text = " ".join(tweet.text.split())
+    html_parser = HTMLParser.HTMLParser()
+    text = html_parser.unescape(" ".join(tweet.text.split()))
 
     if user.verified:
         prefix = u"\u2713"
