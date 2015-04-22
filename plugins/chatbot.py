@@ -185,13 +185,13 @@ factory = ChatterBotFactory()
 #b0dafd24ee35a477
 #f3b17b62de377847
 
-bot = factory.create(ChatterBotType.PANDORABOTS, 'df9c8acfde345d97')
+bot = factory.create(ChatterBotType.CLEVERBOT)
 botsession = bot.create_session()
 
-chatbot_re = (r'((?:uguu|uguubot)\s(.+)|(.+)\s(?:uguu|uguubot))', re.I)
+chatbot_re = (r'((?:peabot)[\s,:](.+)|(.+)\s(?:peabot))', re.I)
 @hook.regex(*chatbot_re)
 @hook.command
 def chatbot(inp, reply=None):
-    thought = inp.group(1).replace('uguubot','').replace('uguu','').replace('ALICE','Uguu').strip()
+    thought = inp.group(1).replace('peabot','').replace('peabot','').replace('ALICE','peabot').strip()
     response = botsession.think(thought)
-    reply(response.replace('Bartender Katie','Uguu').replace('ALICE','UGUU~~~').replace('Daisy Picnic','infinity').replace('ELVIS','infinity').replace('<br> ','').replace('German Alice','urmom').replace('Dancing Alice','infinity').replace('Www.AliceBot.Org','uguubot.com').replace('alicebot','uguubot')  )
+    reply(response.replace('Bartender Katie','Uguu').replace('ALICE','UGUU~~~').replace('Daisy Picnic','infinity').replace('ELVIS','infinity').replace('<br> ','').replace('German Alice','urmom').replace('Dancing Alice','infinity').replace('Www.AliceBot.Org','uguubot.com').replace('alicebot','peabot')  )
