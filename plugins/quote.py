@@ -29,6 +29,7 @@ def add_quote(db, chan, nick, add_nick, msg):
                    (chan, nick, add_nick, msg, time.time()))
         db.commit()
     except db.IntegrityError:
+        db.rollback()
         return "Message already stored, doing nothing."
     return "Quote added."
 
@@ -44,6 +45,7 @@ def del_quote(db, nick, num):
                     (nick, msg))
         db.commit()
     except db.IntegrityError:
+        db.rollback()
         return "Message doesn't exist. Doing nothing."
     return "Message removed"
 
