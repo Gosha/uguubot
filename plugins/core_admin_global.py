@@ -138,7 +138,7 @@ def clearlogs(inp, input=None):
     subprocess.call(["./bot", "clear"])
 
 
-@hook.command(permissions=["botcontrol"], adminonly=True)
+@hook.command(autohelp=False, permissions=["botcontrol"], adminonly=True)
 def join(inp, conn=None, notice=None, bot=None):
     """join <channel> -- Joins <channel>."""
     for target in inp.split(" "):
@@ -167,11 +167,15 @@ def part(inp, conn=None, chan=None, notice=None, bot=None):
     for target in targets.split(" "):
         if not target.startswith("#"):
             target = "#{}".format(target)
-        notice(u"Attempting to leave {}...".format(target))
-        conn.part(target)
-        channellist.remove(target.lower().strip())
+	if target in conn.channels:
+	    notice(u"Attempting to leave {}...".format(target))
+	    conn.part(target)
+	    channellist.remove(target.lower().strip())
+	    print 'Deleted {} from channel list.'.format(target)
+	else:
+	    notice(u"Not in {}!".format(target))
+
     json.dump(bot.config, open('config', 'w'), sort_keys=True, indent=2)
-    print 'Deleted {} from channel list.'.format(target)
     return
 
 
@@ -278,16 +282,18 @@ def set(inp, conn=None, chan=None, db=None, notice=None):
         if field and nick and value:
             if 'del' in value or 'none' in value: value = ''
             if 'location' in field or \
+                'fines' in field or\
                 'lastfm' in field or  \
                 'desktop' in field or \
                 'battlestation' in field or\
                 'birthday' in field or\
                 'waifu' in field or\
-                'greeting' in field :
+                'greeting' in field or\
+                'snapchat' in field:
                 #if type(value) is list: value = value[0]
                 if value.lower() is 'none': database.set(db,'users',field, '','nick',nick) 
                 else: database.set(db,'users',field, value,'nick',nick) 
-                notice(u"PRIVMSG {} :Set {} for {} to {}.".format(chan, field, nick, value))
+                notice(u"Set {} for {} to {}.".format(field, nick, value))
                 return
 
     notice(u"Could not set {}.".format(field))

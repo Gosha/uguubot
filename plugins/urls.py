@@ -8,7 +8,7 @@ import urllib2
 import gelbooru
 
 class urlopener(FancyURLopener):
-    version = "Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20100101 Firefox/14.0.1"
+    version = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0'
 
 opener = urlopener()
 
@@ -19,45 +19,40 @@ def process_url(match,bot=None,input=None,chan=None,db=None, reply=None):
     global trimlength
     url = match.group(1).replace('https:','http:')
 
-    if '127.0.0.1' in url or 'localhost' in url: return
+    if '127.0.0.1' in url or 'localhost' in url.lower(): return
     
     trimlength = database.get(db,'channels','trimlength','chan',chan)
     if not trimlength: trimlength = 9999
     try: trimlength = int(trimlength)
     except: trimlength = trimlength
 
-    if 'lrsp' == input.nick.lower(): 
-        reply('\x02\x034^^^ WARNING!!!\x03\x02 This link probably contains pedo.')
-        #reply(gelbooru.gelbooru("furry nsfw"))
-        return
+    if '.html' in url.lower(): return
 
-    if 'lolihub.tk' in url: return "http://lolihub.com <- themadman is a thief. Stealing OC from Nymovyn is the lowest of the low."
-
-    if   'youtube.com'       in url: return                         #handled by youtube plugin: exiting
-    elif 'youtu.be'          in url: return                         #handled by youtube plugin: exiting
-    elif 'yooouuutuuube'     in url: return                         #handled by youtube plugin: exiting
-    elif 'vimeo.com'         in url: return                         #handled by vimeo plugin: exiting
-    elif 'newegg.com'        in url: return                         #handled by newegg plugin: exiting
-    elif 'amazon.com'        in url: return                         #handled by Amazon plugin: exiting
-    elif 'reddit.com/r'      in url: return                         #handled by Reddit plugin: exiting
-    elif 'hulu.com'          in url: return                         #handled by hulu plugin: exiting
-    elif 'imdb.com'          in url: return                         #handled by imbd plugin: exiting
-    elif 'soundcloud.com'    in url: return                         #handled by soundcloud plugin: exiting
-    elif 'spotify.com'       in url: return                         #handled by Spotify plugin: exiting
-    elif 'twitch.tv'         in url: return                         #handled by Twitch plugin: exiting
-    elif 'twitter.com'       in url: return                         #handled by Twitter plugin: exiting
-    elif 'simg.gelbooru.com' in url: return unmatched_url(url)      #handled by Gelbooru plugin: exiting
-    elif 'gelbooru.com'      in url: return                         #handled by Gelbooru plugin: exiting
-    elif 'craigslist.org'    in url: return craigslist_url(url)     #Craigslist
-    elif 'ebay.com'          in url: return ebay_url(url,bot)       #Ebay
-    elif 'wikipedia.org'     in url: return wikipedia_url(url)      #Wikipedia
-    elif 'hentai.org'        in url: return hentai_url(url,bot)     #Hentai
-    elif 'boards.4chan.org'  in url:                                #4chan
-        if '4chan.org/b/'    in url: reply('\x033>/b/\x03')
-        if '#p'              in url: return fourchanquote_url(url)  #4chan Quoted Post
-        if '/thread/'        in url: return fourchanthread_url(url)   #4chan Post
-        if '/res/'           in url: return fourchanthread_url(url)   #4chan Post
-        if '/src/'           in url: return unmatched_url(url)      #4chan Image
+    if   'youtube.com'       in url.lower(): return                         #handled by youtube plugin: exiting
+    elif 'youtu.be'          in url.lower(): return                         #handled by youtube plugin: exiting
+    elif 'yooouuutuuube'     in url.lower(): return                         #handled by youtube plugin: exiting
+    elif 'vimeo.com'         in url.lower(): return                         #handled by vimeo plugin: exiting
+    elif 'newegg.com'        in url.lower(): return                         #handled by newegg plugin: exiting
+    elif 'amazon.com'        in url.lower(): return                         #handled by Amazon plugin: exiting
+    elif 'reddit.com/r'      in url.lower(): return                         #handled by Reddit plugin: exiting
+    elif 'hulu.com'          in url.lower(): return                         #handled by hulu plugin: exiting
+    elif 'imdb.com'          in url.lower(): return                         #handled by imbd plugin: exiting
+    elif 'soundcloud.com'    in url.lower(): return                         #handled by soundcloud plugin: exiting
+    elif 'spotify.com'       in url.lower(): return                         #handled by Spotify plugin: exiting
+    elif 'twitch.tv'         in url.lower(): return                         #handled by Twitch plugin: exiting
+    elif 'twitter.com'       in url.lower(): return                         #handled by Twitter plugin: exiting
+    elif 'simg.gelbooru.com' in url.lower(): return unmatched_url(url)      #handled by Gelbooru plugin: exiting
+    elif 'gelbooru.com'      in url.lower(): return                         #handled by Gelbooru plugin: exiting
+    elif 'craigslist.org'    in url.lower(): return craigslist_url(url)     #Craigslist
+    elif 'ebay.com'          in url.lower(): return ebay_url(url,bot)       #Ebay
+    elif 'wikipedia.org'     in url.lower(): return wikipedia_url(url)      #Wikipedia
+    elif 'hentai.org'        in url.lower(): return hentai_url(url,bot)     #Hentai
+    elif 'boards.4chan.org'  in url.lower():                                #4chan
+        if '4chan.org/b/'    in url.lower(): reply('\x033>/b/\x03')
+        if '#p'              in url.lower(): return fourchanquote_url(url)  #4chan Quoted Post
+        if '/thread/'        in url.lower(): return fourchanthread_url(url)   #4chan Post
+        if '/res/'           in url.lower(): return fourchanthread_url(url)   #4chan Post
+        if '/src/'           in url.lower(): return unmatched_url(url)      #4chan Image
         else:                        return fourchanboard_url(url)  #4chan Board
     else:                            return unmatched_url(url,chan,db)      #process other url
 
@@ -155,12 +150,6 @@ def wikipedia_url(match):
     return http.process_text("\x02Wikipedia.org: {}\x02 - {}...".format(title,post[:trimlength]))
 
 
-##################################################
-# Username and Password
-# username = "jooshed"
-# password = "Cuntal0p3"
-##################################################
-
 
 # hentai_re = (r'(http.+hentai.org/.+)', re.I)
 # @hook.regex(*hentai_re)
@@ -217,7 +206,7 @@ import requests
 from lxml import html
 import md5
 
-user_agent = 'python-requests/1.2.3 CPython/3.3.2 Darwin/12.5.0'
+user_agent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0'
 # cookies = dict(cookies_are='working')
 cookies = dict()
 headers = {
@@ -230,9 +219,9 @@ def unmatched_url(match,chan,db):
     disabled_commands = database.get(db,'channels','disabled','chan',chan)
     
     r = requests.get(match, headers=headers,allow_redirects=True, stream=True)
-    print r.headers
-    print r.status_code
-    print r.request.headers
+    # print r.headers
+    # print r.status_code
+    # print r.request.headers
     if r.status_code != 404:
         # image_hash = md5.new(r.content).hexdigest()
         # print image_hash
@@ -244,9 +233,15 @@ def unmatched_url(match,chan,db):
         
         if content_type.find("html") != -1: # and content_type is not 'gzip':
             body = html.fromstring(r.text)
-            return body.xpath('//title/text()')[0]
+            try: title_formatted = text.fix_bad_unicode(body.xpath('//title/text()')[0])
+            except: title_formatted = body.xpath('//title/text()')[0]
+            return title_formatted
+#             return body.xpath('//title/text()')[0]
+
+            # return re.match(r'^\W+(\w.*)', body.xpath('//title/text()')[0]).group(1)
         else:
-            if 'filesize' in disabled_commands: return
+	    if disabled_commands:
+                if 'filesize' in disabled_commands: return
             try:
                 if r.headers['Content-Length']:
                     length = int(r.headers['Content-Length'])
@@ -258,8 +253,9 @@ def unmatched_url(match,chan,db):
                     length = "Unknown size"
             except:
                 length = "Unknown size"
-
-            if length != None: return u"[{}] {}".format(content_type, length)
+            if "503 B" in length: length = ""
+            if length is None: length = ""
+            return u"[{}] {}".format(content_type, length)
     else: 
         return 
 

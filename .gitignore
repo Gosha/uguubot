@@ -17,3 +17,5 @@ gitflow
 .DS_Store
 cmdflood
 flood
+*.fuse*
+None.txt

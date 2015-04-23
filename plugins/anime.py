@@ -154,7 +154,14 @@ def animetake(inp):
 @hook.command
 def nyaa(inp):
     "nyaa <query> - NYAA Search"
-    search_url = 'http://nyaa.eu/?term=%s' % (inp.replace(' ','+'))
+    search_url = 'http://nyaa.eu/?page=search&cats=1_37&filter=0&term=%s' % (inp.replace(' ','+'))
+    return u'%s' % (search_url)
+
+
+@hook.command
+def sn(inp):
+    "sukebei nyaa <query> - sukebei NYAA Search"
+    search_url = 'http://sukebei.nyaa.se/?page=search&filter=0&term=%s' % (inp.replace(' ','+'))
     return u'%s' % (search_url)
 
 
@@ -197,6 +204,21 @@ def mal(inp):
 # def yahari(inp):
 #     return get_time_until('2013-04-20 01:30:00')
 
+@hook.command(autohelp=False)
+def destiny(inp):
+    return get_time_until('2014-12-09 22:59:00')
+
+@hook.command(autohelp=False)
+def iphone(inp):
+    return get_time_until('2014-09-10 2:00:00')
+
+@hook.command(autohelp=False)
+def halo(inp):
+    return get_time_until('2014-11-11 15:59:00')
+
+@hook.command(autohelp=False)
+def s6(inp):
+    return 'nobody cares'
 
 
 # import pyanidb as anidb

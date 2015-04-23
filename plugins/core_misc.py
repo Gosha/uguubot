@@ -10,6 +10,7 @@ socket.setdefaulttimeout(10)
 
 nick_re = re.compile(":(.+?)!")
 
+
 # Identify to NickServ (or other service)
 @hook.event('004')
 def onjoin(paraml, conn=None, bot=None):
@@ -34,7 +35,7 @@ def onjoin(paraml, conn=None, bot=None):
         time.sleep(1)
 
     print "Bot ready."
-
+    
 
 # Auto-join on Invite (Configurable, defaults to True)
 @hook.event('INVITE')
@@ -54,6 +55,7 @@ def onkick(paraml, conn=None, chan=None, bot=None):
     if paraml[1] == conn.nick:
         auto_rejoin = conn.conf.get('auto_rejoin', False)
         if auto_rejoin:
+            time.sleep(5)
             conn.join(paraml[0])
         else:
             channellist = bot.config["connections"][conn.name]["channels"]
@@ -63,6 +65,7 @@ def onkick(paraml, conn=None, chan=None, bot=None):
 
 @hook.event("JOIN")
 def onjoined(inp,input=None, conn=None, chan=None,raw=None, db=None):
+    database.set(db,'users','mask',input.mask.lower().replace('~',''),'nick',input.nick.lower())
     mask = user.format_hostmask(input.mask)
     disabled_commands = database.get(db,'channels','disabled','chan',chan)
     if not disabled_commands: disabled_commands = ""
@@ -86,7 +89,13 @@ def onjoined(inp,input=None, conn=None, chan=None,raw=None, db=None):
     if not 'greeting' in disabled_commands:
         # send greeting
         greeting = database.get(db,'users','greeting','nick',input.nick)
+
         if greeting: return greeting
+
+
+@hook.event("PART")
+def onpart(inp,input=None, conn=None, chan=None,raw=None, db=None):
+    database.set(db,'users','mask',input.mask.lower().replace('~',''),'nick',input.nick.lower())
 
 
 @hook.event("NICK")
@@ -96,6 +105,34 @@ def onnick(paraml, conn=None, raw=None):
     if old_nick == conn.nick:
         conn.nick = new_nick
         print "Bot nick changed from '{}' to '{}'.".format(old_nick, new_nick)
+
+
+@hook.event("MODE")
+def onmode(paraml, input=None, conn=None, raw=None, chan=None, db=None, bot=None):
+    if '#defect' in chan.lower(): 
+        if not user.is_admin(input.mask,chan,db,bot):
+            fixed_modes = []
+            params = []
+            param_num = 2
+            accepted_modes = 'vhoaql'
+            doesnt_require_param = 'cntspmiBCMNRSzO'
+            requires_param = 'klvhoaqbeI'
+            modes = list(str(paraml[1]))
+            for mode in modes:
+                if mode is '+': fixed_modes.append(mode.replace('+','-'))
+                elif mode is '-': fixed_modes.append(mode.replace('-','+'))
+                else:
+                    if mode not in accepted_modes:
+                        if mode in doesnt_require_param: 
+                            fixed_modes.append(mode)
+                        elif mode in requires_param:
+                            fixed_modes.append(mode)
+                            if mode not in 'kl': params.append(paraml[param_num])
+                            param_num+=1
+                    else: 
+                        if mode in requires_param: param_num+=1
+
+            if len(fixed_modes) > 1: conn.send(u'MODE {} {} {}'.format(chan, ''.join(fixed_modes), ' '.join(params)))
 
 
 @hook.singlethread
