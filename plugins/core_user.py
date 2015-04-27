@@ -66,7 +66,7 @@ def greeting(inp, nick=None, conn=None, chan=None,db=None, notice=None):
             if '@' in inp: nick = inp.split('@')[1].strip()
             result = database.get(db,'users','greeting','nick',nick)
             if result: 
-                return '{}: {}'.format(nick,result)
+                return u'{}: {}'.format(nick,result)
             else: 
                 if not '@' in inp: notice(greeting.__doc__)
                 return 'No greeting saved for {}.'.format(nick)
@@ -74,7 +74,7 @@ def greeting(inp, nick=None, conn=None, chan=None,db=None, notice=None):
             database.set(db,'users','greeting','','nick',nick)
             notice("Deleted your greeting.")
         else:
-            database.set(db,'users','greeting','{} '.format(inp.strip().replace("'","").encode('utf8')),'nick',nick)
+            database.set(db,'users','greeting',u'{} '.format(inp.strip()),'nick',nick)
             notice("Saved your greeting.")
         return
     except: return "Uwaaahh~~?"
