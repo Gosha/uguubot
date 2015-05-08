@@ -28,6 +28,7 @@ responses = (
     ("wop",                     ("wop","wop")),
     ("myah",                    ("i want to die","i want to die")),
     ("i want to die",           ("MYAH!","MYAH~")),
+    ("alot",                    ("https://serve.empy.org/IV0zwg5xp9.png","ALOT~")),
     
 )
     # ("yeah",                    ("yeah","yeah")),
