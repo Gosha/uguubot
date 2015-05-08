@@ -27,7 +27,7 @@ responses = (
     ("wop",                     ("wop","wop")),
     ("myah",                    ("i want to die","i want to die")),
     ("i want to die",           ("MYAH!","MYAH~")),
-    ("alot",                    ("https://core.trac.wordpress.org/raw-attachment/ticket/13237/ALOT.png","ALOT~")),
+    ("alot",                    ("https://serve.empy.org/IV0zwg5xp9.png","ALOT~")),
     
 )
     # ("yeah",                    ("yeah","yeah")),
